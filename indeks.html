@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun, Faesal! 🥳</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0f172a;       
+            --canvas-bg: #f8fafc;     
+            --main-blue: #1e40af;     
+            --accent-blue: #3b82f6;   
+            --text-dark: #1e293b;     
+            --grid-color: #e2e8f0;    
+            --paper-line: #cbd5e1;    
+            
+            /* Ukuran standar Laptop */
+            --env-w: 460px;
+            --env-h: 300px;
+            --flap-h: 130px;
+        }
+
+        /* Ukuran responsif universal untuk HP Android / iPhone */
+        @media (max-width: 768px) {
+            :root {
+                --env-w: 280px;
+                --env-h: 190px;
+                --flap-h: 85px;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-dark);
+            user-select: none;
+            overflow: hidden; /* Default laptop terkunci */
+        }
+
+        /* Khusus layar HP: izinkan scroll halaman jika layar terlalu pendek */
+        @media (max-width: 768px) {
+            body, html {
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+        }
+
+        /* ================= 1. COVER SCREEN (UNBOXING KADO) ================= */
+        #coverScreen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .cover-title {
+            font-family: 'Fredoka One', cursive;
+            color: #ffffff;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .cover-title { font-size: 1.5rem; }
+        }
+
+        .cover-sub {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 35px;
+            font-weight: 600;
+        }
+
+        .gift-box-wrapper {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            cursor: pointer;
+            animation: floatGift 3s ease-in-out infinite;
+        }
+
+        @keyframes floatGift {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(4deg); }
+        }
+
+        .gift-box-emoji {
+            font-size: 6.5rem;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+            transition: transform 0.2s ease;
+        }
+
+        .click-hint {
+            margin-top: 30px;
+            color: #60a5fa;
+            font-weight: 800;
+            letter-spacing: 1px;
+            animation: pulseHint 1.5s infinite ease-in-out;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.4; transform: scale(0.96); }
+            50% { opacity: 1; transform: scale(1.04); }
+        }
+
+        /* ================= 2. CANVAS PETASAN & BALON ================= */
+        #animationCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 20; 
+        }
+
+        /* ================= 3. UTAMA WORKSPACE PERAYAAN ================= */
+        .main-workspace {
+            width: 100%;
+            min-height: 100%;
+            background-color: var(--canvas-bg);
+            background-image: linear-gradient(var(--grid-color) 1.5px, transparent 1.5px),
+                              linear-gradient(90deg, var(--grid-color) 1.5px, transparent 1.5px);
+            background-size: 28px 28px;
+            position: relative;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .main-workspace.active {
+            opacity: 1;
+        }
+
+        .content-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            z-index: 25;
+        }
+
+        /* Responsif Layout Atas-Bawah Dinamis untuk HP Android */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                height: auto;
+                padding: 40px 20px;
+                gap: 35px;
+            }
+        }
+
+        .left-side {
+            width: 45%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 6%;
+        }
+
+        @media (max-width: 768px) {
+            .left-side {
+                width: 100%;
+                height: auto;
+                padding-left: 0;
+                justify-content: center;
+            }
+        }
+
+        .right-side {
+            width: 55%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .right-side {
+                width: 100%;
+                height: auto;
+                justify-content: center;
+                margin-top: 55px; /* Menurunkan posisi amplop di HP agar tidak menutupi nama */
+                padding-bottom: 20px;
+            }
+        }
+
+        /* ================= 4. TATA LETAK TEKS UTAMA ================= */
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                align-items: center; 
+            }
+        }
+
+        .title-block {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .title-block {
+                gap: 4px;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+        }
+
+        .main-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 6rem;
+            color: var(--main-blue);
+            line-height: 0.9;
+            -webkit-text-stroke: 4px white; 
+            text-shadow: 4px 4px 0px white, 9px 9px 0px var(--accent-blue);
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 1200px) {
+            .main-title { font-size: 4.5rem; }
+        }
+        @media (max-width: 768px) {
+            .main-title { 
+                font-size: 2.8rem; 
+                line-height: 1.0;
+                -webkit-text-stroke: 2px white;
+                text-shadow: 2px 2px 0px white, 5px 5px 0px var(--accent-blue);
+                justify-content: center;
+            }
+        }
+
+        .name-highlight {
+            color: #1d4ed8;
+            text-shadow: 4px 4px 0px white, 9px 9px 0px #93c5fd;
+        }
+
+        @media (max-width: 768px) {
+            .name-highlight {
+                text-shadow: 2px 2px 0px white, 5px 5px 0px #93c5fd;
+            }
+        }
+
+        .letter {
+            display: inline-block;
+            transform: translateY(140px);
+            opacity: 0;
+        }
+
+        .letter.bounce-active {
+            animation: letterBounce 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes letterBounce {
+            0% { transform: translateY(100px) scale(0.4); opacity: 0; }
+            70% { transform: translateY(-12px) scale(1.12); opacity: 1; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        .date-badge {
+            padding: 10px 28px;
+            background-color: var(--main-blue);
+            color: white;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1.05rem; 
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+            transform: scale(0);
+        }
+
+        @media (max-width: 768px) {
+            .date-badge {
+                padding: 6px 18px;
+                font-size: 0.85rem;
+            }
+        }
+
+        .date-badge.pop-active {
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* ================= 5. AMPLOP SURAT INTERAKTIF ================= */
+        .envelope-container {
+            width: var(--env-w);
+            height: var(--env-h);
+            position: relative;
+            perspective: 1200px;
+            cursor: pointer;
+        }
+
+        .envelope {
+            position: absolute;
+            width: 100%; height: 100%;
+            background-color: #1e3a8a; 
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.2);
+            z-index: 10;
+            border: 4px solid #3b82f6;
+            transform-style: preserve-3d;
+        }
+
+        .flap {
+            position: absolute;
+            top: 0; left: 0; width: 0; height: 0;
+            border-left: calc(var(--env-w) / 2) solid transparent;
+            border-right: calc(var(--env-w) / 2) solid transparent;
+            border-top: var(--flap-h) solid #2563eb; 
+            transform-origin: top;
+            transition: transform 0.5s ease 0.2s, z-index 0.2s ease 0.4s;
+            z-index: 12;
+        }
+
+        .pocket {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, #1e3a8a, #1d4ed8);
+            clip-path: polygon(0% 38%, 50% 64%, 100% 38%, 100% 100%, 0% 100%);
+            border-radius: 16px;
+            z-index: 11;
+        }
+
+        .gold-seal {
+            position: absolute;
+            top: calc(var(--env-h) * 0.42); left: calc(50% - 22px);
+            width: 44px; height: 44px;
+            background: radial-gradient(circle, #fbbf24 0%, #d97706 100%);
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 13;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            transition: transform 0.4s ease;
+        }
+
+        .envelope-hint {
+            position: absolute;
+            bottom: -35px; left: 0; width: 100%;
+            text-align: center;
+            color: var(--main-blue);
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            animation: pulseHint 1.5s infinite;
+        }
+
+        /* ================= 6. KERTAS SURAT NOTEPAD (SISTEM MODAL HP) ================= */
+        .letter-card {
+            position: absolute;
+            bottom: 10px; left: 5%;
+            width: 90%;
+            height: calc(100% - 20px);
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 5;
+            border: 3px solid #ffffff;
+            outline: 2px solid var(--accent-blue);
+            
+            /* Garis Buku Tulis */
+            background-image: linear-gradient(var(--paper-line) 1px, transparent 1px);
+            background-size: 100% 26px;
+            background-position: 0 10px;
+            
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0.4s, z-index 0.1s ease 0.4s;
+        }
+
+        /* Konfigurasi Kertas Surat Menyesuaikan Semua HP Android */
+        @media (max-width: 768px) {
+            .letter-card {
+                padding: 16px;
+                background-size: 100% 22px;
+                background-position: 0 6px;
+                transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+            }
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%; height: 100%;
+            overflow-y: auto; 
+        }
+
+        .surat-title {
+            font-size: 1.2rem;
+            color: #ef4444; 
+            font-weight: 800;
+            margin-bottom: 12px;
+            border-bottom: 2px dashed #f87171;
+            padding-bottom: 4px;
+        }
+
+        .handwritten-area {
+            font-family: 'Caveat', cursive; 
+            font-size: 1.65rem;
+            color: #1e3a8a; 
+            line-height: 1.5;
+            text-align: left;
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .handwritten-area {
+                font-size: 1.35rem;
+                line-height: 1.4;
+            }
+        }
+
+        .handwritten-p {
+            margin-bottom: 10px;
+        }
+
+        /* Tombol Tutup Surat khusus untuk Mobile */
+        .close-btn-mobile {
+            display: none;
+            margin-top: 10px;
+            padding: 8px;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .envelope-container.opened .close-btn-mobile {
+                display: block; /* Hanya muncul ketika surat terbuka di HP */
+            }
+        }
+
+        /* ================= KONTROL ANIMASI BUKA AMPLOP ================= */
+        .envelope-container.opened .flap {
+            transform: rotateX(180deg);
+            z-index: 4;
+        }
+
+        .envelope-container.opened .gold-seal {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        /* [LAPTOP LAYOUT]: Kertas meluncur naik secara vertikal biasa */
+        .envelope-container.opened .letter-card {
+            transform: translateY(calc(-1 * var(--env-h) * 0.78)); 
+            z-index: 35; 
+        }
+
+        /* [HP UNIVERSAL LAYOUT]: Berubah menjadi Modal Pop-up Tengah yang Mengambang */
+        @media (max-width: 768px) {
+            .envelope-container.opened .letter-card {
+                position: fixed;
+                top: 12%;
+                left: 6%;
+                width: 88%;
+                height: 70vh; 
+                transform: translateY(0) scale(1);
+                z-index: 150; 
+                box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+                animation: mobileModalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+            }
+        }
+
+        @keyframes mobileModalPop {
+            0% { transform: scale(0.6) translateY(50px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .envelope-container.opened .envelope-hint {
+            display: none;
+        }
+
+        @keyframes popIn { 
+            to { transform: scale(1); } 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="coverScreen">
+        <h1 class="cover-title">YOU HAVE A SPECIAL SURPRISE GIFT!</h1>
+        <p class="cover-sub">Kado Spesial Untuk Seseorang yang Luar Biasa</p>
+        
+        <div class="gift-box-wrapper" onclick="unboxGift()">
+            <div class="gift-box-emoji" id="giftEmoji">🎁</div>
+        </div>
+        
+        <p class="click-hint">Ketuk kado untuk membuka 👆</p>
+    </div>
+
+    <canvas id="animationCanvas"></canvas>
+
+    <div class="main-workspace" id="workspace">
+        
+        <div class="content-wrapper">
+            <div class="left-side">
+                <div class="header-content">
+                    <div class="title-block">
+                        <h1 class="main-title" id="titleHappy">Happy</h1>
+                        <h1 class="main-title" id="titleBirthday">Birthday</h1>
+                        <h1 class="main-title name-highlight" id="titleName">Faesal</h1>
+                    </div>
+                    
+                    <div class="date-badge" id="dateBadge">20 June 2026</div>
+                </div>
+            </div>
+
+            <div class="right-side">
+                <div class="envelope-container" id="envelopeContainer" onclick="openEnvelope(event)">
+                    
+                    <div class="letter-card" id="letterCard">
+                        <div class="card-content">
+                            <h3 class="surat-title">To: Faesal 📝</h3>
+                            
+                            <div class="handwritten-area">
+                                <p class="handwritten-p">Dear Faesal,</p>
+                                <p class="handwritten-p">Selamat ulang tahun! 🎉</p>
+                                <p class="handwritten-p">Semoga di usiamu yang baru ini, kamu selalu diberikan kesehatan, kebahagiaan, dan kemudahan dalam setiap langkahnya.</p>
+                                <p class="handwritten-p">Tetaplah jadi sosok yang luar biasa, menginspirasi, dan selalu ceria. yaa intinya tetep jadi faesal yang gua kenal lah, Semoga semua impian dan cita-cita luu segera terwujud! dan terakhir kasih tau kalau udah punya cewek yaa wkwkwk✨</p>
+                                <p class="handwritten-p" style="text-align: right; margin-top: 15px; font-weight: bold;">— Dari temen aka mahesa 😊</p>
+                            </div>
+
+                            <button class="close-btn-mobile" onclick="closeEnvelopeMobile(event)">Tutup Surat ❌</button>
+                        </div>
+                    </div>
+
+                    <div class="envelope">
+                        <div class="flap"></div>
+                        <div class="pocket"></div>
+                        <div class="gold-seal">✉️</div>
+                    </div>
+
+                    <p class="envelope-hint">Klik Amplop untuk Membuka Surat 📩</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="birthdayMusic" loop>
+        <source src="Taylor Swift - 22 (320).mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const music = document.getElementById('birthdayMusic');
+        const canvas = document.getElementById('animationCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let animationsActive = false;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // ================= ENGINE ANIMASI CANVAS 2D =================
+        const confettiList = [];
+        const balloonList = [];
+        const fireworkList = [];
+        const sparkList = [];
+
+        const colors = ['#2563eb', '#60a5fa', '#3b82f6', '#93c5fd', '#ffffff', '#fbbf24', '#f59e0b', '#34d399', '#f87171'];
+
+        function spawnConfetti() {
+            if (!animationsActive) return;
+            if (confettiList.length < 85) {
+                confettiList.push({
+                    x: Math.random() * canvas.width,
+                    y: -20,
+                    size: Math.random() * 7 + 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: Math.random() * 2 + 1.2,
+                    speedX: Math.sin(Math.random() * 2) * 0.6,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: Math.random() * 4 - 2
+                });
+            }
+        }
+
+        function spawnBalloon() {
+            if (!animationsActive) return;
+            if (balloonList.length < 9) {
+                balloonList.push({
+                    x: Math.random() * (canvas.width * 0.9) + (canvas.width * 0.05),
+                    y: canvas.height + 100,
+                    radius: Math.random() * 10 + 15,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: Math.random() * 1.0 + 0.6,
+                    wiggleSpeed: Math.random() * 0.02 + 0.01,
+                    wiggleDistance: Math.random() * 12 + 6,
+                    angle: Math.random() * 100
+                });
+            }
+        }
+
+        function launchFirework(isLeft) {
+            if (!animationsActive) return;
+            const startX = isLeft ? 40 : canvas.width - 40;
+            const startY = canvas.height + 10;
+            
+            const targetX = isLeft 
+                ? Math.random() * (canvas.width * 0.4) + (canvas.width * 0.1)
+                : Math.random() * (canvas.width * 0.4) + (canvas.width * 0.5);
+            const targetY = Math.random() * (canvas.height * 0.35) + (canvas.height * 0.15);
+
+            const distanceX = targetX - startX;
+            const distanceY = targetY - startY;
+            const duration = Math.random() * 35 + 45; 
+
+            fireworkList.push({
+                x: startX,
+                y: startY,
+                targetX: targetX,
+                targetY: targetY,
+                speedX: distanceX / duration,
+                speedY: distanceY / duration,
+                life: duration,
+                color: colors[Math.floor(Math.random() * colors.length)]
+            });
+        }
+
+        function createExplosion(x, y, color) {
+            const count = 45; 
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 1.8;
+                sparkList.push({
+                    x: x,
+                    y: y,
+                    speedX: Math.cos(angle) * speed,
+                    speedY: Math.sin(angle) * speed,
+                    color: color,
+                    size: Math.random() * 3 + 1.8,
+                    life: Math.random() * 25 + 30,
+                    alpha: 1
+                });
+            }
+        }
+
+        function updateAndDraw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!animationsActive) {
+                requestAnimationFrame(updateAndDraw);
+                return;
+            }
+
+            // Render Confetti
+            for (let i = confettiList.length - 1; i >= 0; i--) {
+                const c = confettiList[i];
+                c.y += c.speedY;
+                c.x += c.speedX;
+                c.rotation += c.rotationSpeed;
+
+                ctx.save();
+                ctx.translate(c.x, c.y);
+                ctx.rotate(c.rotation * Math.PI / 180);
+                ctx.fillStyle = c.color;
+                ctx.fillRect(-c.size/2, -c.size/2, c.size, c.size);
+                ctx.restore();
+
+                if (c.y > canvas.height + 20) confettiList.splice(i, 1);
+            }
+
+            // Render Balon
+            for (let i = balloonList.length - 1; i >= 0; i--) {
+                const b = balloonList[i];
+                b.y -= b.speedY;
+                b.angle += b.wiggleSpeed;
+                const drawX = b.x + Math.sin(b.angle) * b.wiggleDistance;
+
+                ctx.beginPath();
+                ctx.fillStyle = b.color;
+                ctx.ellipse(drawX, b.y, b.radius * 0.85, b.radius, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.moveTo(drawX, b.y + b.radius);
+                ctx.lineTo(drawX - 4, b.y + b.radius + 5);
+                ctx.lineTo(drawX + 4, b.y + b.radius + 5);
+                ctx.closePath();
+                ctx.fillStyle = b.color;
+                ctx.fill();
+
+                if (b.y < -b.radius - 50) balloonList.splice(i, 1);
+            }
+
+            // Render Roket Petasan
+            for (let i = fireworkList.length - 1; i >= 0; i--) {
+                const f = fireworkList[i];
+                f.x += f.speedX;
+                f.y += f.speedY;
+                f.life--;
+
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = f.color;
+                ctx.fill();
+                ctx.shadowBlur = 0; 
+
+                if (f.life <= 0) {
+                    createExplosion(f.x, f.y, f.color);
+                    fireworkList.splice(i, 1);
+                }
+            }
+
+            // Render Percikan
+            for (let i = sparkList.length - 1; i >= 0; i--) {
+                const s = sparkList[i];
+                s.x += s.speedX;
+                s.y += s.speedY;
+                s.speedY += 0.07; 
+                s.life--;
+                s.alpha = s.life / 55;
+
+                ctx.save();
+                ctx.globalAlpha = s.alpha;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = s.color;
+                ctx.fill();
+                ctx.restore();
+
+                if (s.life <= 0 || s.y > canvas.height) sparkList.splice(i, 1);
+            }
+
+            spawnConfetti();
+            if (Math.random() < 0.018) spawnBalloon();
+
+            requestAnimationFrame(updateAndDraw);
+        }
+
+        // ================= INTERAKSI TOMBOL & KONTROL SISTEM =================
+
+        function unboxGift() {
+            music.play().catch(() => console.log("Audio siap diputar."));
+
+            document.getElementById('giftEmoji').style.transform = 'scale(1.25)';
+            document.getElementById('giftEmoji').innerText = '💥';
+
+            setTimeout(() => {
+                const cover = document.getElementById('coverScreen');
+                cover.style.opacity = '0';
+                setTimeout(() => cover.style.visibility = 'hidden', 800);
+
+                document.getElementById('workspace').classList.add('active');
+                animationsActive = true;
+                startCelebration();
+            }, 500);
+        }
+
+        function openEnvelope(event) {
+            const container = document.getElementById('envelopeContainer');
+            if (!container.classList.contains('opened')) {
+                container.classList.add('opened');
+                
+                setTimeout(() => {
+                    const burstX = window.innerWidth <= 768 ? window.innerWidth * 0.5 : window.innerWidth * 0.72;
+                    const burstY = window.innerWidth <= 768 ? window.innerHeight * 0.5 : window.innerHeight * 0.45;
+                    createExplosion(burstX, burstY, '#fbbf24');
+                }, 750);
+            }
+        }
+
+        // Fungsi Khusus Mobile Android untuk Menutup Modal Surat Kembali Ke Amplop
+        function closeEnvelopeMobile(event) {
+            event.stopPropagation(); // Mencegah pemicu klik amplop ulang
+            const container = document.getElementById('envelopeContainer');
+            const letter = document.getElementById('letterCard');
+            
+            if (window.innerWidth <= 768) {
+                letter.style.animation = 'none';
+                letter.style.transform = 'scale(0) translateY(50px)';
+                letter.style.opacity = '0';
+                
+                setTimeout(() => {
+                    container.classList.remove('opened');
+                    letter.removeAttribute('style');
+                }, 400);
+            }
+        }
+
+        function animateTextLetters(elementId) {
+            const container = document.getElementById(elementId);
+            const textStr = container.innerText;
+            container.innerHTML = '';
+
+            [...textStr].forEach((char) => {
+                const span = document.createElement('span');
+                if (char === ' ') {
+                    span.style.width = window.innerWidth <= 768 ? '8px' : '16px';
+                    span.style.display = 'inline-block';
+                } else {
+                    span.classList.add('letter');
+                    span.innerText = char;
+                }
+                container.appendChild(span);
+            });
+
+            const letters = container.querySelectorAll('.letter');
+            letters.forEach((span, index) => {
+                setTimeout(() => {
+                    span.classList.add('bounce-active');
+                }, index * 45);
+            });
+        }
+
+        function startCelebration() {
+            animateTextLetters('titleHappy');
+            setTimeout(() => animateTextLetters('titleBirthday'), 180);
+            setTimeout(() => animateTextLetters('titleName'), 450);
+
+            setTimeout(() => {
+                document.getElementById('dateBadge').classList.add('pop-active');
+            }, 1000);
+
+            // Tembakan Petasan Pertama
+            setTimeout(() => { launchFirework(true); launchFirework(false); }, 800);
+            setTimeout(() => { launchFirework(true); launchFirework(false); }, 1200);
+
+            // Loop Petasan Otomatis Selamanya
+            setInterval(() => { launchFirework(true); }, 3300);
+            setInterval(() => { launchFirework(false); }, 3800); 
+        }
+
+        requestAnimationFrame(updateAndDraw);
+    </script>
+</body>
+</html>
